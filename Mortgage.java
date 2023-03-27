@@ -7,60 +7,34 @@ public class Mortgage{
 
 public static void main(String[] args) 
 {
-    //ALL of my variables 
-    
-    int principle = 0;
-    double rate = 0;
-    int year = 0;
-    Scanner scanner = new Scanner(System.in);
+// get and check Principle from the readNumber method 
+int principle = (int)readNumber("Principle: ", 1000, 1000000);
 
-// loop to check Principle 
-    while(true){
-    System.out.print("Principle: ");
-    principle = scanner.nextInt();
-    if(principle > 1000000 || principle < 1000){
-    System.out.println("Please enter a valid principle between 1,000 and 1,000,000");
-    continue;
-    }
-    break;
-}
-//loop to check and get rate 
-    while(true){
-    System.out.print("Rate: ");
-     rate = scanner.nextDouble();
-    if(rate > 30 || rate <= 0)
-    {
-        System.out.println("Please enter a rate between 0 and 30");
-        continue;
-    }
-    break;
-}
+//get and check rate using the readNumber method  
+double rate = readNumber("Rate: ", 0, 30);
 
 //loop to get and check years
-while(true){
-    System.out.print("Years: ");
-    year = scanner.nextByte();
-    if(year > 30 || year <= 0){
-    continue;
-    }
-  break;
-}
+int year = (int)readNumber("Years: ", 1, 30);
 
-  
 double monthlyPayment = calculateMortgage(principle, rate, year);
-
 NumberFormat payment = NumberFormat.getCurrencyInstance();
 String MPayment = payment.format(monthlyPayment);
-    System.out.println("Your Payment " + MPayment);
-
-
-
-  scanner.close();
-
-
+System.out.println("Your Payment " + MPayment);
 }
 
-
+public static double readNumber(String prompt, double min, double max){
+    try (Scanner scanner = new Scanner(System.in)) {
+        double value;
+        while(true){
+            System.out.println(prompt);
+            value = scanner.nextInt();
+            if(value <= max || value >= min)
+                break;
+            System.out.println("Please enter a valid value between " + min + " and " + max);
+        }
+        return value;
+    }
+}
 
 public static double calculateMortgage(
     int principle, 
@@ -68,7 +42,7 @@ public static double calculateMortgage(
     int year){
         
         final int month = 12;
-         final int Ir = 100;
+        final int Ir = 100;
 
         int numOfPayments = year * month;
         double monthlyRate = (rate/Ir) / month ;
