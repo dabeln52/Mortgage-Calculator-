@@ -1,4 +1,3 @@
-import java.math.*;
 import java.text.NumberFormat;
 import java.util.Scanner;
 
@@ -9,8 +8,7 @@ public class Mortgage{
 public static void main(String[] args) 
 {
     //ALL of my variables 
-    final int month = 12;
-    final int Ir = 100;
+    
     int principle = 0;
     double rate = 0;
     int year = 0;
@@ -35,7 +33,6 @@ public static void main(String[] args)
         System.out.println("Please enter a rate between 0 and 30");
         continue;
     }
-    rate = (rate/Ir) / month ;
     break;
 }
 
@@ -46,16 +43,39 @@ while(true){
     if(year > 30 || year <= 0){
     continue;
     }
-    year = year * month; 
   break;
 }
-// MATH AND FORMAT TO FOR OUR MONTHLY PAYMENT 
-double monthlyPayment = principle * (rate * Math.pow((1+rate), year)) / (Math.pow((1+rate),year) -1 );
+
+  
+double monthlyPayment = calculateMortgage(principle, rate, year);
+
 NumberFormat payment = NumberFormat.getCurrencyInstance();
 String MPayment = payment.format(monthlyPayment);
     System.out.println("Your Payment " + MPayment);
-  
+
+
+
   scanner.close();
+
+
 }
 
+
+
+public static double calculateMortgage(
+    int principle, 
+    double rate,
+    int year){
+        
+        final int month = 12;
+         final int Ir = 100;
+
+        int numOfPayments = year * month;
+        double monthlyRate = (rate/Ir) / month ;
+
+        double monthlyPayment = principle * (monthlyRate * Math.pow((1+monthlyRate), numOfPayments)) / (Math.pow((1+monthlyRate),numOfPayments) -1 );
+
+        return monthlyPayment;
+
+}
 }
